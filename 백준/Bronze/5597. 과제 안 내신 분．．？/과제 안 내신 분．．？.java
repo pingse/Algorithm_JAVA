@@ -1,23 +1,21 @@
+import java.util.Arrays;
 import java.util.Scanner;
-
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int temp = 0;
-        int[] a = new int[30];
 
-        for(int i =0; i<28; i++){
-            temp = sc.nextInt();
-            for(int k = 1; k<=30; k++){
-                if(k == temp){
-                    a[k-1] = temp;
-                }
-            }
+        int[] n = new int[30];
+
+        for (int i = 0; i < 28; i++) {
+            int p = sc.nextInt();
+
+            n[p-1] = p;
         }
-        for(int i = 0; i<30; i++){
-            if(a[i] == 0){
-                System.out.println(i+1);
+        for (int j = 0; j < 30; j++) {
+            if (n[j] == 0) {
+                System.out.println(j + 1);
             }
         }
     }
