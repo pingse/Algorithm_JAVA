@@ -16,7 +16,7 @@ public class Main {
             st = new StringTokenizer(str, " ");
             map.put(st.nextToken(), st.nextToken());
         }
-        
+
         for (String key : map.keySet()) {
             if (map.get(key).equals("enter")) {
                 System.out.println(key);
