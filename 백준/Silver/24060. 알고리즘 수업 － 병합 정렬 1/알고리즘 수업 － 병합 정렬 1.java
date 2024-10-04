@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import static java.lang.System.in;
@@ -49,14 +48,11 @@ public class Main {
         int idx = l;
 
         while (left <= m && right <= r) {
-            count++;
             if (Integer.parseInt(str[left]) <= Integer.parseInt(str[right])) {
                 temp[idx] = str[left];
-                if (count == c) number = Integer.parseInt(temp[idx]);
                 left++;
             } else {
                 temp[idx] = str[right];
-                if (count == c) number = Integer.parseInt(temp[idx]);
                 right++;
             }
             idx++;
@@ -64,23 +60,21 @@ public class Main {
 
         if (left > m) {
             while (right <= r) {
-                count++;
                 temp[idx] = str[right];
-                if (count == c) number = Integer.parseInt(temp[idx]);
                 right++;
                 idx++;
             }
         } else {
             while (left <= m) {
-                count++;
                 temp[idx] = str[left];
-                if (count == c) number = Integer.parseInt(temp[idx]);
                 left++;
                 idx++;
             }
         }
 
         for (int i = l; i<=r; i++){
+            count++;
+            if (count == c) number = Integer.parseInt(temp[i]);
             str[i] = temp[i];
         }
     }
