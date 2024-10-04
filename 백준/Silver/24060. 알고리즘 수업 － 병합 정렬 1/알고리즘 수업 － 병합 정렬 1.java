@@ -27,6 +27,9 @@ public class Main {
     }
 
     static void mergeSort(String[] str, int l, int r, int c) {
+        if (count > c) {
+            return;
+        }
         if (l == r) {
             return;
         }
