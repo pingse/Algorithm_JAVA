@@ -10,24 +10,27 @@ public class Main {
     public static void main(String[] args) throws IOException {
         char[] words = br.readLine().toCharArray();
         int n = Integer.parseInt(br.readLine());
-        int count = 0;
-
+        int[][] alphabet = new int[26][words.length+1];
         StringTokenizer st;
+
+        for (int i = 0; i < 26; i++) {
+            alphabet[i][0] = 0;
+            for (int j = 0; j < words.length; j++) {
+                if ((int) (words[j] - 97) == i) {
+                    alphabet[i][j+1] = alphabet[i][j] + 1;
+                } else {
+                    alphabet[i][j+1] = alphabet[i][j];
+                }
+            }
+        }
 
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine(), " ");
-            char word = st.nextToken().charAt(0);
+            int word = st.nextToken().charAt(0) - 97;
             int start = Integer.parseInt(st.nextToken());
-            int end = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken()) + 1;
 
-            for (int j = start; j <= end; j++) {
-                if (words[j] == word) {
-                    count++;
-                }
-            }
-
-            bw.write(Integer.toString(count) + "\n");
-            count = 0;
+            bw.write(Integer.toString(alphabet[word][end]-alphabet[word][start]) + "\n");
         }
         bw.flush();
         bw.close();
