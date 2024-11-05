@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Collections;
 import java.util.PriorityQueue;
 
@@ -8,6 +6,7 @@ import static java.lang.System.in;
 
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws IOException {
         int n = Integer.parseInt(br.readLine());
         Integer a;
@@ -18,13 +17,15 @@ public class Main {
             if (a == 0) {
                 a = queue.poll();
                 if (a != null) {
-                    System.out.println(a);
+                    bw.write(Integer.toString(a) + "\n");
                 } else {
-                    System.out.println("0");
+                    bw.write("0\n");
                 }
             } else {
                 queue.offer(a);
             }
         }
+        bw.flush();
+        bw.close();
     }
 }
