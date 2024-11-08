@@ -14,7 +14,6 @@ public class Main {
         StringTokenizer st;
         for (int i = 1; i <= n; i++) {
             st = new StringTokenizer(br.readLine(), " ");
-
             matrix[i] = new Matrix(Integer.parseInt(st.nextToken()),
                     Integer.parseInt(st.nextToken()));
         }
@@ -29,9 +28,7 @@ public class Main {
         if (f == s) {
             return 0;
         }
-        if (f + 1 == s) {
-            return matrix[f].col * matrix[f].row * matrix[s].col;
-        }
+
         if (dp[f][s] == null) {
             dp[f][s] = Integer.MAX_VALUE;
             for (int i = f; i < s; i++) {
