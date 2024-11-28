@@ -1,28 +1,25 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    static boolean[] visited;
-    static int[] dist;
-    static int[] destination;
-    static int[] saveDist;
-    static ArrayList<ArrayList<intersection>> list;
-    static int INF = 50000001;
 
-    static class intersection{
+    static class node {
         int v;
         int l;
 
-        public intersection(int v, int l) {
+        public node(int v, int l) {
             this.v = v;
             this.l = l;
         }
     }
+
+    static int[] dist;
+    static ArrayList<ArrayList<node>> list;
+    static int[] destination;
+    static int INF = 100000000;
+    static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
         int T = Integer.parseInt(br.readLine());
@@ -34,15 +31,16 @@ public class Main {
             int M = Integer.parseInt(st.nextToken());
             int t = Integer.parseInt(st.nextToken());
 
+            dist = new int[N + 1];
+            Arrays.fill(dist, INF);
             destination = new int[t];
             visited = new boolean[N + 1];
-            dist = new int[N + 1];
             list = new ArrayList<>();
-            saveDist = new int[N + 1];
 
             for (int j = 0; j <= N; j++) {
                 list.add(new ArrayList<>());
             }
+
             st = new StringTokenizer(br.readLine(), " ");
             int s = Integer.parseInt(st.nextToken());
             int v1 = Integer.parseInt(st.nextToken());
@@ -54,35 +52,24 @@ public class Main {
                 int v = Integer.parseInt(st.nextToken());
                 int l = Integer.parseInt(st.nextToken());
 
-                list.get(u).add(new intersection(v, l));
-                list.get(v).add(new intersection(u, l));
+                if ((u == v1 && v == v2) || (u == v2 && v == v1)) {
+                    list.get(u).add(new node(v, (l * 2) - 1));
+                    list.get(v).add(new node(u, (l * 2) - 1));
+                } else {
+                    list.get(u).add(new node(v, l * 2));
+                    list.get(v).add(new node(u, l * 2));
+                }
             }
             for (int j = 0; j < t; j++) {
                 destination[j] = Integer.parseInt(br.readLine());
             }
             Arrays.sort(destination);
 
-            dijkstra(s, 1);
-            for (int j = 1; j <= N; j++) {
-                saveDist[j] = dist[j];
-            }
+            dijkstra(s);
 
-            int first = 0;
-            first += dijkstra(s, v1);
-            first += dijkstra(v1, v2);
-
-            int second = 0;
-            second += dijkstra(s, v2);
-            second += dijkstra(v2, v1);
-            for (int j = 0; j < t; j++) {
-                int vFirst = first + dijkstra(v2, destination[j]);
-                int vSecond = second + dijkstra(v1, destination[j]);
-
-                int V = Math.min(vFirst, vSecond);
-                int shortest = saveDist[destination[j]];
-
-                if (!(vFirst >= INF && vSecond >= INF) && V == shortest) {
-                    bw.write(Integer.toString(destination[j]) + " ");
+            for (int value : destination) {
+                if (dist[value] % 2 == 1) {
+                    bw.write(Integer.toString(value) + " ");
                 }
             }
             bw.write("\n");
@@ -92,29 +79,26 @@ public class Main {
         br.close();
     }
 
-    static int dijkstra(int start, int end) {
-        PriorityQueue<intersection> queue = new PriorityQueue<>((o1, o2) -> o1.l - o2.l);
-        Arrays.fill(visited, false);
-        Arrays.fill(dist, INF);
+    static void dijkstra(int start) {
+        PriorityQueue<node> queue = new PriorityQueue<>((o1, o2) -> o1.l - o2.l);
+        queue.add(new node(start, 0));
         dist[start] = 0;
-        queue.add(new intersection(start, 0));
 
         while (!queue.isEmpty()) {
-            intersection n = queue.poll();
+            node n = queue.poll();
 
             if (!visited[n.v]) {
                 visited[n.v] = true;
 
-                for (intersection next : list.get(n.v)) {
+                for (node next : list.get(n.v)) {
                     if (!visited[next.v] && dist[next.v] > dist[n.v] + next.l) {
                         dist[next.v] = dist[n.v] + next.l;
-                        queue.add(new intersection(next.v, dist[next.v]));
+                        queue.add(new node(next.v, dist[next.v]));
                     }
                 }
             }
-
         }
 
-        return dist[end];
+
     }
 }
