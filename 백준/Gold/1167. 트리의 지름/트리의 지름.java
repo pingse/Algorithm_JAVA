@@ -56,6 +56,7 @@ public class Main {
         for (Node cur : list.get(start)) {
             if (!visited[cur.v]) {
                 dfs(cur.v, length + cur.l);
+                visited[cur.v] = true;
             }
         }
     }
