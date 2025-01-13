@@ -3,38 +3,35 @@ import java.io.*;
 
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws IOException {
         StringBuilder sb = new StringBuilder();
+        int n = Integer.parseInt(br.readLine());
         Stack<Integer> stack = new Stack<>();
 
-        int N = Integer.parseInt(br.readLine());
+        int now = 0;
+        int next;
 
-        int start = 0;
+        for (int i = 0; i < n; i++) {
+            next = Integer.parseInt(br.readLine());
 
-        while(N -- > 0) {
-
-            int value = Integer.parseInt(br.readLine());
-
-            if(value > start) {
-                for(int i = start + 1; i <= value; i++) {
-                    stack.push(i);
-                    sb.append('+').append('\n');
+            if (next > now) {
+                for (int j = now + 1; j <= next; j++) {
+                    stack.push(j);
+                    sb.append("+\n");
                 }
-                start = value; 
+                now = next;
             }
 
-            else if(stack.peek() != value) {
+            else if (stack.peek() != next) {
                 System.out.println("NO");
                 return;
             }
 
             stack.pop();
-            sb.append('-').append('\n');
-
+            sb.append("-\n");
         }
 
+        br.close();
         System.out.println(sb);
     }
-    
 }
