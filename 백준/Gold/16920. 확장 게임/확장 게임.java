@@ -2,87 +2,94 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static int[] dy = {-1, 1, 0, 0};
+    static int[] dx = {0, 0, -1, 1};
+    static int y;
+    static int x;
+    static int P;
+    static char[][] board;
+    static int[] answer;
+    static int[] distance;
+    static Queue<int[]>[] queue;
+    public static void main(String[] args) throws IOException {
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        String str;
+        y = Integer.parseInt(st.nextToken());
+        x = Integer.parseInt(st.nextToken());
+        P = Integer.parseInt(st.nextToken());
 
-	static class Node{
-		int x;
-		int y;
-		public Node(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
-	static int n, m, s;
-	static int[] dis, castles;
-	static int[] dx = {-1, 1, 0, 0};
-	static int[] dy = {0, 0, -1, 1};
-	static char[][] map;
-	static Queue<Node>[] q;
-	public static void main(String[] args) throws  IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
-		s = Integer.parseInt(st.nextToken());
-		
-		castles = new int[s+1];
-		q = new LinkedList[s+1];
-		dis = new int[s+1];
-		st = new StringTokenizer(br.readLine());
-		for(int i=1; i<=s; i++) {
-			dis[i] = Integer.parseInt(st.nextToken());
-			q[i] = new LinkedList<>();
-		}
-		
-		map = new char[n][m];
-		for(int i=0; i<n; i++) {
-			map[i] = br.readLine().toCharArray();
-			for(int j=0; j<m; j++) {
-				if('1' <= map[i][j] && map[i][j] <= '9') {
-					int userNo = map[i][j]-'0';
-					q[userNo].add(new Node(j,i));
-					castles[userNo]++;
-				}
-			}
-		}
-		bfs();
-		for(int i=1; i<=s; i++) {
-			System.out.print(castles[i]+" ");
-		}
-		System.out.println();
-	}
-	
-	static void bfs() {
-		while(true) {
-			for(int u=1; u<=s; u++) {
-				int s_dis = dis[u];
-				for(int i=0; i<s_dis; i++) {
-					int size = q[u].size();
-					for(int j=0; j<size; j++) {
-						Node cur = q[u].poll();
-						int cx = cur.x;
-						int cy = cur.y;
-						for(int d=0; d<4; d++) {
-							int nx = cx +dx[d];
-							int ny = cy +dy[d];
-							if(nx < 0 || ny < 0 || nx > m-1 || ny > n-1) continue;
-							if(map[ny][nx] == '.') {
-								map[ny][nx] = (char) (u+'0');
-								q[u].add(new Node(nx, ny));
-								castles[u]++;
-							}
-						}
-					}
-					if(q[u].isEmpty()) break;
-				}
-			}
-			boolean f = true;
-			for(int u=1; u<=s; u++) {
-				if(!q[u].isEmpty()) {
-					f = false;
-					break;
-				}
-			}
-			if(f) break;
-		}		
-	}
+
+        board = new char[y + 1][x + 1];
+        distance = new int[P + 1];
+        answer = new int[P + 1];
+        queue = new LinkedList[P+1];
+
+        st = new StringTokenizer(br.readLine(), " ");
+        for (int i = 1; i <= P; i++) {
+            distance[i] = Integer.parseInt(st.nextToken());
+            queue[i] = new LinkedList<>();
+        }
+
+        for (int i = 1; i <= y; i++) {
+            str = br.readLine();
+            for (int j = 1; j <= x; j++) {
+                board[i][j] = str.charAt(j-1);
+                if (board[i][j] != '.' && board[i][j] != '#') {
+                    queue[board[i][j] - '0'].add(new int[]{i, j});
+                    answer[board[i][j] - '0']++;
+                }
+            }
+        }
+
+        bfs();
+        for (int i = 1; i <= P; i++) {
+            bw.write(Integer.toString(answer[i]) + " ");
+        }
+        bw.flush();
+        bw.close();
+        br.close();
+
+    }
+    static void bfs() {
+        while(true) {
+            for (int i = 1; i <= P; i++) {
+                for (int j = 0; j < distance[i]; j++) {
+                    int size = queue[i].size();
+                    for (int k = 0; k < size; k++) {
+                        int[] cur = queue[i].poll();
+
+                        for (int z = 0; z < 4; z++) {
+                            int ny = cur[0] + dy[z];
+                            int nx = cur[1] + dx[z];
+
+                            if (ny > y || ny < 1 || nx > x || nx < 1) continue;
+
+                            if (board[ny][nx] == '.') {
+                                board[ny][nx] = (char) (i + '0');
+                                queue[i].add(new int[]{ny, nx});
+                                answer[i]++;
+                            }
+                        }
+                    }
+                    if (queue[i].isEmpty()) {
+                        break;
+                    }
+                }
+            }
+
+
+            boolean state = false;
+            for (int i = 1; i <= P; i++) {
+                if (!queue[i].isEmpty()) {
+                    state = true;
+                    break;
+                }
+            }
+            if (!state) {
+                break;
+            }
+        }
+    }
 }
