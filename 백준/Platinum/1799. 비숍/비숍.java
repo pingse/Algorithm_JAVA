@@ -48,7 +48,7 @@ public class Main {
             return;
         }
 
-        if (isQueen(y, x)) {
+        if (isBishop(y, x)) {
             isVisited[y][x] = true;
             dfs(y, x+2, color, cnt + 1);
             isVisited[y][x] = false;
@@ -56,7 +56,7 @@ public class Main {
         dfs(y, x + 2, color, cnt);
     }
 
-    static boolean isQueen(int y, int x) {
+    static boolean isBishop(int y, int x) {
         if (board[y][x] == 0) {
             return false;
         }
