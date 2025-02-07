@@ -22,19 +22,11 @@ public class Main {
                 arr1[j] = Integer.parseInt(st.nextToken());
             }
             st = new StringTokenizer(br.readLine(), " ");
+            Arrays.sort(arr1);
             for (int j = 0; j < arr2.length; j++) {
                 arr2[j] = Integer.parseInt(st.nextToken());
-            }
-
-            Arrays.sort(arr1);
-            Arrays.sort(arr2);
-
-            for (int j = arr1.length-1; j >= 0; j--) {
-                if (arr1[j] <= arr2[0]) {
-                    break;
-                }
-                for (int k = 0; k < arr2.length; k++) {
-                    if (arr1[j] <= arr2[k]) {
+                for (int k = arr1.length - 1; k >= 0; k--) {
+                    if (arr2[j] >= arr1[k]) {
                         break;
                     }
                     count++;
