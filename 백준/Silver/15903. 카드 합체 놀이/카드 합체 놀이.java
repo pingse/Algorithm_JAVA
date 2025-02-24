@@ -8,24 +8,22 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
-        long[] arr = new long[n];
+        PriorityQueue<Long> queue = new PriorityQueue<>();
         long answer = 0;
 
         st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < n; i++) {
-            arr[i] = Long.parseLong(st.nextToken());
+            queue.add(Long.parseLong(st.nextToken()));
         }
-        
+
         for (int i = 0; i < m; i++) {
-            Arrays.sort(arr);
-            
-            long sum = arr[0] + arr[1];
-            arr[0] = sum;
-            arr[1] = sum;
+            long sum = queue.poll() + queue.poll();
+            queue.add(sum);
+            queue.add(sum);
         }
 
         for (int i = 0; i < n; i++) {
-            answer += arr[i];
+            answer += queue.poll();
         }
         System.out.print(answer);
     }
