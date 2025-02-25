@@ -22,39 +22,20 @@ public class Main {
                 return o1[0] - o2[0];
             }
         });
-
-        int answer = 0;
         int first = arr[0][0];
         int second = arr[0][1];
-
-        for (int i = 1; i < n; i++) {
-            if (second < arr[i][0]) {
-                if (first < 0 && second > 0) {
-                    answer += Math.abs(first) + second;
-                } else if (first < 0 && second < 0) {
-                    answer += Math.abs(first) - Math.abs(second);
-                } else {
-                    answer += second - first;
-                }
-                first = arr[i][0];
-                second = arr[i][1];
+        int answer = second - first;
+        for(int i = 0; i < n; i++){
+            if(first <= arr[i][0] && arr[i][1] <= second) {
                 continue;
-            }
-
-            if (second >= arr[i][1]) {
-                continue;
+            } else if(arr[i][0] < second) {
+                answer += arr[i][1] - second;
             } else {
-                second = arr[i][1];
+                answer += arr[i][1] - arr[i][0];
             }
+            first = arr[i][0];
+            second = arr[i][1];
         }
-        if (first < 0 && second > 0) {
-            answer += Math.abs(first) + second;
-        } else if (first < 0 && second < 0) {
-            answer += Math.abs(first) - Math.abs(second);
-        } else {
-            answer += second - first;
-        }
-
         System.out.print(answer);
 
     }
