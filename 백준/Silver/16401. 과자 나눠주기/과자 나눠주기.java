@@ -9,14 +9,14 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
 
         st = new StringTokenizer(br.readLine(), " ");
+        int end = 0;
         int[] snack = new int[N];
         for (int i = 0; i < N; i++) {
             snack[i] = Integer.parseInt(st.nextToken());
+            end = Math.max(end, snack[i]);
         }
-        Arrays.sort(snack);
 
         int start = 1;
-        int end = snack[N - 1];
         while (start <= end) {
             int mid = (start + end) /2;
             int count = 0;
