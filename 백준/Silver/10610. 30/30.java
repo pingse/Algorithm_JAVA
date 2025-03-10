@@ -3,34 +3,25 @@ import java.io.*;
 
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     public static void main(String[] args) throws IOException {
         String str = br.readLine();
+        StringBuilder sb = new StringBuilder();
+        int sum = 0;
 
-        ArrayList<Integer> list = new ArrayList<>();
-        int i = 0;
+        char[] arr = str.toCharArray();
+        Arrays.sort(arr);
 
-        while (i != str.length()) {
-            int n = str.charAt(i) - '0';
-            list.add(n % 10);
-            i++;
+        for (int i = arr.length - 1; i >= 0; i--) {
+            int n = arr[i] - '0';
+            sum += n;
+            sb.append(n);
         }
 
-        if (!list.contains(0)) {
+        if (arr[0] - '0' != 0 || sum % 3 != 0) {
             System.out.print("-1");
         } else {
-            int sum = 0;
-            for (int a : list) {
-                sum += a;
-            }
-
-            if (sum % 3 == 0) {
-                Collections.sort(list, Collections.reverseOrder());
-                for (int a : list) {
-                    System.out.print(a);
-                }
-            } else {
-                System.out.print("-1");
-            }
+            System.out.print(sb.toString());
         }
     }
 }
