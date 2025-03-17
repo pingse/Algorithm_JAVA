@@ -4,32 +4,34 @@ import java.io.*;
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+    static boolean[] isPrime = new boolean[1004002];
+
     public static void main(String[] args) throws IOException {
+        setPrime();
 
         int n = Integer.parseInt(br.readLine());
 
-        while (true) {
-            if (!isPrime(n) || !palindrome(n)) {
-                n++;
+        while (n < isPrime.length) {
+            if (!isPrime[n] && palindrome(n)) {
+                System.out.print(n);
+                break;
+            }
+            n++;
+        }
+    }
+
+    static void setPrime() {
+        isPrime[0] = isPrime[1] = true;
+        for (int i = 2; i <= Math.sqrt(isPrime.length); i++) {
+            if (isPrime[i]) {
                 continue;
             }
-            System.out.print(n);
-            break;
-        }
-    }
 
-    static boolean isPrime(int n) {
-        if (n == 1) {
-            return false;
-        }
-        for (int i = 2; i <= Math.sqrt(n); i++) {
-            if (n % i == 0) {
-                return false;
+            for (int j = i * 2; j < isPrime.length; j += i) {
+                isPrime[j] = true;
             }
         }
-        return true;
     }
-
     static boolean palindrome(int n) {
         String str = Integer.toString(n);
         boolean state = true;
