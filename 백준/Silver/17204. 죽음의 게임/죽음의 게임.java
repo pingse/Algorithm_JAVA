@@ -29,7 +29,7 @@ public class Main {
             }
             if (!visited[member[cur]]) {
                 queue.add(member[cur]);
-                visited[cur] = true;
+                visited[member[cur]] = true;
             }
         }
 
