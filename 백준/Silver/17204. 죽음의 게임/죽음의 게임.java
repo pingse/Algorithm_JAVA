@@ -14,22 +14,18 @@ public class Main {
         for (int i = 0; i < n; i++) {
             member[i] = Integer.parseInt(br.readLine());
         }
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(member[0]);
-        visited[member[0]] = true;
+
+        int cur = 0;
         int count = 0;
 
-        while (!queue.isEmpty()) {
-            int cur = queue.poll();
+        while (!visited[member[cur]]) {
             count++;
+            cur = member[cur];
+            visited[cur] = true;
 
             if (cur == m) {
                 System.out.print(count);
                 System.exit(0);
-            }
-            if (!visited[member[cur]]) {
-                queue.add(member[cur]);
-                visited[member[cur]] = true;
             }
         }
 
