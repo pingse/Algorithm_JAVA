@@ -2,90 +2,73 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
- 
-    static int T, H, W, O, F, sX, sY, eX, eY, map[][];
-    static int[] dx = {0, -1, 0, 1}, dy = {1, 0, -1, 0};
-    static class Info {
-        int x, y, p;
- 
-        public Info(int x, int y, int p) {
-            super();
-            this.x = x;
-            this.y = y;
-            this.p = p;
-        }
-        
-    }
-    
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static ArrayList<ArrayList<Integer>> list;
+    static int[][] map;
+    static boolean[][] visited;
+    static int H, W, O, F, Xs, Ys, Xe, Ye;
+    static Queue<int[]> queue;
+    static int[] dy = {-1, 1, 0, 0};
+    static int[] dx = {0, 0, -1, 1};
+
     public static void main(String[] args) throws IOException {
-        
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
         StringTokenizer st;
-        
-        T = Integer.parseInt(br.readLine());
-        for (int tc = 0; tc < T; tc++) {
-            
-            st = new StringTokenizer(br.readLine());
+
+        for (int i = 0; i < t; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
             H = Integer.parseInt(st.nextToken());
             W = Integer.parseInt(st.nextToken());
             O = Integer.parseInt(st.nextToken());
             F = Integer.parseInt(st.nextToken());
-            sX = Integer.parseInt(st.nextToken()) - 1;
-            sY = Integer.parseInt(st.nextToken()) - 1;
-            eX = Integer.parseInt(st.nextToken()) - 1;
-            eY = Integer.parseInt(st.nextToken()) - 1;
-            
-            map = new int[H][W];
-            
-            // 장애물 정보 입력
-            for (int i = 0; i < O; i++) {
-                
-                st = new StringTokenizer(br.readLine());
-                int x = Integer.parseInt(st.nextToken()) - 1;
-                int y = Integer.parseInt(st.nextToken()) - 1;
-                int l = Integer.parseInt(st.nextToken());
-                
-                map[x][y] = l;
+            Xs = Integer.parseInt(st.nextToken());
+            Ys = Integer.parseInt(st.nextToken());
+            Xe = Integer.parseInt(st.nextToken());
+            Ye = Integer.parseInt(st.nextToken());
+
+            map = new int[H + 1][W + 1];
+            visited = new boolean[H + 1][W + 1];
+            for (int j = 0; j < O; j++) {
+                st = new StringTokenizer(br.readLine(), " ");
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
+                int h = Integer.parseInt(st.nextToken());
+
+                map[x][y] = h;
             }
-            
-            if(isArrive()) System.out.println("잘했어!!");
-            else System.out.println("인성 문제있어??");
+
+            queue = new LinkedList<>();
+            queue.add(new int[]{Xs, Ys, F});
+            visited[Xs][Ys] = true;
+            bfs();
+            bw.write(visited[Xe][Ye] ? "잘했어!!\n" : "인성 문제있어??\n");
         }
- 
+        bw.flush();
+        br.close();
+        bw.close();
     }
- 
-    private static boolean isArrive() {
-        
-        boolean[][] visited = new boolean[H][W];
-        Queue<Info> q = new LinkedList<>();
-        
-        visited[sX][sY] = true;
-        q.add(new Info(sX, sY, F));
-        while(!q.isEmpty()) {
-            
-            Info now = q.poll();
 
-            if(now.p == 0) continue;
-            
-            for (int d = 0; d < 4; d++) {
-                int xx = now.x + dx[d];
-                int yy = now.y + dy[d];
+    static void bfs() {
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int nowF = cur[2];
+            if (nowF == 0) continue;
 
-                if(xx < 0 || xx >= H || yy < 0 || yy >= W) continue;
+            for (int i = 0; i < 4; i++) {
+                int ny = cur[1] + dy[i];
+                int nx = cur[0] + dx[i];
 
-                if(visited[xx][yy]) continue;
+                if (nx > H || ny > W || nx < 1 || ny < 1) continue;
+                if (visited[nx][ny]) continue;
 
-                if(now.p < map[xx][yy] - map[now.x][now.y]) continue;
-                
-                if(xx == eX && yy == eY) return true;
-                
-                visited[xx][yy] = true;
-                q.add(new Info(xx, yy, now.p - 1));
+                if (map[nx][ny] - map[cur[0]][cur[1]] > nowF) continue;
+
+                visited[nx][ny] = true;
+                if (nx == Xe && ny == Ye) return;
+
+                queue.add(new int[]{nx, ny, nowF - 1});
             }
-            
         }
-        
-        return false;
     }
- 
 }
