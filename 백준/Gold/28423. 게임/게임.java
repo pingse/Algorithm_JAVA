@@ -4,6 +4,7 @@ import java.util.*;
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static boolean[] visited;
+    static int[] results = new int[100001];
     static int L, R;
     static int value;
     static boolean result = false;
@@ -39,20 +40,24 @@ public class Main {
         }
 
         visited[start] = true;
-        int l = 0;
-        int r = 1;
+        if (results[start] == 0) {
+            
+            int l = 0;
+            int r = 1;
 
-        String str = Integer.toString(start);
-        for (int i = 0; i < str.length(); i++) {
-            l += str.charAt(i) - '0';
-            r *= str.charAt(i) - '0';
+            String str = Integer.toString(start);
+            for (int i = 0; i < str.length(); i++) {
+                l += str.charAt(i) - '0';
+                r *= str.charAt(i) - '0';
+            }
+            str = Integer.toString(l) + Integer.toString(r);
+            results[start] = Integer.parseInt(str);
         }
-        str = Integer.toString(l) + Integer.toString(r);
-        if (Integer.parseInt(str) == start) {
+        if (results[start] == start) {
             value = 1;
             result = true;
             return;
         }
-        dfs(Integer.parseInt(str));
+        dfs(results[start]);
     }
 }
