@@ -8,6 +8,7 @@ public class Main {
     static int[] answer;
     static boolean[] visited;
     static ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+    static ArrayList<Integer> ans = new ArrayList<>();
     public static void main(String[] args) throws IOException {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         N = Integer.parseInt(st.nextToken());
@@ -30,17 +31,13 @@ public class Main {
 
             list.get(u).add(v);
         }
-        Dijkstra();
-        ArrayList<Integer> ans = new ArrayList<>();
-        for (int i = 1; i <= N; i++) {
-            if (answer[i] == K) {
-                ans.add(i);
-            }
-        }
+
+        bfs();
         int size = ans.size();
 
         if (size == 0) bw.write("-1");
         else {
+            Collections.sort(ans);
             for (int i = 0; i < ans.size(); i++) {
                 bw.write(ans.get(i) + "\n");
             }
@@ -50,17 +47,21 @@ public class Main {
         br.close();
     }
 
-    static void Dijkstra() {
-        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> Integer.compare(o1[1], o2[1]));
-        pq.add(new int[]{X, 0});
-        while (!pq.isEmpty()) {
-            int[] cur = pq.poll();
-            visited[cur[0]] = true;
+    static void bfs() {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(X);
+        visited[X] = true;
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
 
-            for (int next : list.get(cur[0])) {
-                if (!visited[next] && answer[next] > cur[1] + 1) {
-                    answer[next] = cur[1] + 1;
-                    pq.add(new int[]{next, answer[next]});
+            for (int next : list.get(cur)) {
+                if (!visited[next]) {
+                    visited[next] = true;
+                    answer[next] = answer[cur] + 1;
+                    queue.add(next);
+                    if (answer[next] == K) {
+                        ans.add(next);
+                    }
                 }
             }
         }
