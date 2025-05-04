@@ -7,8 +7,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int n = Integer.parseInt(br.readLine());
         StringTokenizer st;
-        Set<Integer> set = new HashSet<>();
-        Integer[] allNum = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+        int k = 0;
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine(), " ");
             int num = 0;
@@ -19,26 +18,22 @@ public class Main {
 
             switch(str) {
                 case "add":
-                    set.add(num);
+                    k |= (1 << num);
                     break;
                 case "remove":
-                    set.remove(num);
+                    k &= ~(1 << num);
                     break;
                 case "check":
-                    bw.write(set.contains(num) ? "1\n" : "0\n");
+                    bw.write((k & (1<<num)) == (1<<num) ? "1\n" : "0\n");
                     break;
                 case "toggle":
-                    if (set.contains(num)) {
-                        set.remove(num);
-                    } else {
-                        set.add(num);
-                    }
+                    k ^= (1 << num);
                     break;
                 case "all":
-                    set = new HashSet<>(Arrays.asList(allNum));
+                    k = (1<<21) -1;
                     break;
                 case "empty":
-                    set.clear();
+                    k = 0;
                     break;
             }
         }
