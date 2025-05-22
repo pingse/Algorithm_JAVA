@@ -1,23 +1,27 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int[] arr) {
-        Arrays.sort(arr);
-        int answer = arr[arr.length-1];
+    public long solution(int[] arr) {
+        long g;
+        long answer = arr[0];
         
-        while(true) {
-            boolean state = false;
-            for (int i = 0; i<arr.length; i++) {
-                if (answer % arr[i] != 0) {
-                    state = true;
-                }
-            }
-            if (!state) {
-                break;
-            } else {
-                answer++;
-            }
+        for (int i = 1; i<arr.length; i++) {
+            g = gcd(answer, arr[i]);
+            answer = (answer * arr[i]) / g;
         }
+        
+        
         return answer;
+    }
+    
+    static long gcd(long a, long b) {
+        while(b > 0) {
+            long temp = b;
+            a%=b;
+            b = a;
+            a = temp;
+            
+        }
+        return a;
     }
 }
