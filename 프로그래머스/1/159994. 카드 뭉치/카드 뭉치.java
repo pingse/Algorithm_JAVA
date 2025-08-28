@@ -14,6 +14,7 @@ class Solution {
                 queue2.poll();
             }  else {
                 answer = "No";
+                break;
             }
         }
         
