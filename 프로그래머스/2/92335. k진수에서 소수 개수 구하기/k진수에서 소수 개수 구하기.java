@@ -4,24 +4,10 @@ class Solution {
     public int solution(int n, int k) {
         int answer = 0;
         String convert = conversion(n, k);
-        StringBuilder sb = new StringBuilder();
-        
-        for (int i = 0; i<convert.length(); i++) {
-            if (convert.charAt(i) == '0') {
-                if(sb.length() == 0) {
-                    continue;
-                } else {
-                    if (checkPrime(Long.parseLong(sb.toString()))) {
-                        answer++;
-                    }
-                    sb.setLength(0);
-                }
-            } else {
-                sb.append(String.valueOf(convert.charAt(i)));
-            }
-        }
-        if (sb.length() != 0) {
-            if (checkPrime(Long.parseLong(sb.toString()))) {
+        String[] arr = convert.split("0");
+        for (String s : arr) {
+            if (s.equals("")) continue;
+            if (checkPrime(Long.parseLong(s))) {
                 answer++;
             }
         }
