@@ -2,29 +2,32 @@ import java.util.*;
 
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
-        int answer = n - lost.length;
-        Arrays.sort(lost);
-        Arrays.sort(reserve);
+        int answer = n;
         
-        for (int i = 0; i<lost.length; i++) {
-            for (int j = 0; j<reserve.length; j++) {
-                if (lost[i] == reserve[j]) {
-                    answer++;
-                    lost[i] = -1;
-                    reserve[j] = -1;
+        int[] people = new int[n+2];
+        
+        for (int i : lost) {
+            people[i]--;
+        }
+        
+        for (int i : reserve) {
+            people[i]++;
+        }
+        
+        for (int i = 0; i<people.length; i++) {
+            if (people[i] == -1) {
+                if (people[i-1] == 1) {
+                    people[i-1]--;
+                    people[i]++;
+                } else if (people[i+1] == 1) {
+                    people[i+1]--;
+                    people[i]++;
+                } else {
+                    answer--;
                 }
             }
         }
         
-        for (int i = 0; i<lost.length; i++) {
-            for (int j = 0; j<reserve.length; j++) {
-                if (lost[i] - 1 == reserve[j] || lost[i] + 1 == reserve[j]) {
-                    reserve[j] = -1;
-                    lost[i] = -1;
-                    answer++;
-                }
-            }
-        }
         return answer;
     }
 }
