@@ -5,28 +5,22 @@ class Solution {
         String answer = "";
         
         Map<String, Integer> map = new HashMap<>();
-
-        for (int i = 0; i<completion.length; i++) {
-            if (map.containsKey(completion[i])) {
-                int a = map.get(completion[i]);
-                map.put(completion[i], a+1);
-            } else {
-                map.put(completion[i], 1);
-            }
+        
+        for (String c : completion) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
         }
         
-        for (int i = 0; i<participant.length; i++) {
-            if (!map.containsKey(participant[i])) {
-                answer = participant[i];
-                break;
-            } else {
-                int b = map.get(participant[i]);
-                if (b != 0) {
-                    map.put(participant[i], b-1);
-                } else {
-                    answer = participant[i];
+        for (String p : participant) {
+            if (map.containsKey(p)) {
+                if (map.get(p) == 0) {
+                    answer = p;
                     break;
+                } else {
+                    map.put(p, map.getOrDefault(p, 0) - 1);
                 }
+            } else {
+                answer = p;
+                break;
             }
         }
         
