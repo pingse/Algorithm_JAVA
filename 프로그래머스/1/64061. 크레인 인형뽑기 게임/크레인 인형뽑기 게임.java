@@ -15,13 +15,15 @@ class Solution {
             }
 
             if (doll == 0) continue;
-            basket.push(doll);
-            while(basket.size() >= 2 && basket.peek() == basket.get(basket.size() - 2)) {
-                basket.pop();
-                basket.pop();
-                answer+=2;
+            if (basket.size() == 0) basket.push(doll);
+            else {
+                if (doll == basket.peek()) {
+                    answer+= 2;
+                    basket.pop();
+                } else {
+                    basket.push(doll);
+                }
             }
-            
         }
         return answer;
     }
