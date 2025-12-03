@@ -6,7 +6,10 @@ class Solution {
         int answer = 0;
         for (int i = 0; i<strArr.length; i++) {
             len[strArr[i].length()]++;
-            answer = Math.max(answer, len[strArr[i].length()]);
+        }
+        
+        for (int i = 0; i<31; i++) {
+            answer = Math.max(len[i], answer);
         }
         return answer;
     }
