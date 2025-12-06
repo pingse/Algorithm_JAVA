@@ -4,21 +4,18 @@ class Solution {
     public int[] solution(String today, String[] terms, String[] privacies) {
         List<Integer> list = new ArrayList<>();
         Map<String, Integer> term = new HashMap<>();
-        int Y = Integer.parseInt(today.substring(0, 4));
-        int M = Integer.parseInt(today.substring(5, 7));
-        int D = Integer.parseInt(today.substring(8));
-        int todayYMD = Y * 12 * 28 + M * 28 + D;
+        String[] YMD = today.split("\\.");
+        int todayYMD = Integer.parseInt(YMD[0]) * 12 * 28 + Integer.parseInt(YMD[1]) * 28 + Integer.parseInt(YMD[2]);
         
         for (String t : terms) {
-            term.put(String.valueOf(t.charAt(0)), Integer.parseInt(t.substring(2)));
+            String[] str = t.split(" ");
+            term.put(str[0], Integer.parseInt(str[1]));
         }
         for (int i = 0; i<privacies.length; i++) {
-            int[] privacy = convertYMD(privacies[i]);
-            char type = privacies[i].charAt(11);
-            
-            privacy[1] += term.get(String.valueOf(type));
-            
-            int ymd = calcExpirationDate(privacy);
+            String[] privacy = privacies[i].split(" ");
+
+            int[] date = convertYMD(privacy[0]);
+            int ymd = calcExpirationDate(date, term.get(privacy[1]));
             
             if (todayYMD > ymd) {
                 list.add(i+1);
@@ -33,11 +30,13 @@ class Solution {
         return answer;
     }
     
-    int[] convertYMD(String privacy) {
-        return new int[]{Integer.parseInt(privacy.substring(0, 4)), Integer.parseInt(privacy.substring(5, 7)), Integer.parseInt(privacy.substring(8, 10))};
+    int[] convertYMD(String date) {
+        String[] ymd = date.split("\\.");
+        
+        return new int[]{Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]), Integer.parseInt(ymd[2])};
     }
     
-    int calcExpirationDate(int[] ymd) {
-        return ymd[0] * 12 * 28 + ymd[1] * 28 + ymd[2]-1;
+    int calcExpirationDate(int[] ymd, int month) {
+        return ymd[0] * 12 * 28 + (ymd[1] + month) * 28 + ymd[2] - 1;
     }
 }
