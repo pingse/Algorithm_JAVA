@@ -7,8 +7,7 @@ class Solution {
         int Y = Integer.parseInt(today.substring(0, 4));
         int M = Integer.parseInt(today.substring(5, 7));
         int D = Integer.parseInt(today.substring(8));
-        int todayYMD = Y * 10000 + M * 100 + D;
-        
+        int todayYMD = Y * 12 * 28 + M * 28 + D;
         
         for (String t : terms) {
             term.put(String.valueOf(t.charAt(0)), Integer.parseInt(t.substring(2)));
@@ -18,7 +17,6 @@ class Solution {
             char type = privacies[i].charAt(11);
             
             privacy[1] += term.get(String.valueOf(type));
-            
             
             int ymd = calcExpirationDate(privacy);
             
@@ -40,29 +38,6 @@ class Solution {
     }
     
     int calcExpirationDate(int[] ymd) {
-        ymd[0] += (ymd[1] / 12);
-        
-        ymd[1] %= 12;
-        
-        if (ymd[1] == 0) {
-            ymd[0]--;
-            ymd[1] = 12;
-        }
-        
-        
-        if (ymd[2] == 1) {
-            ymd[2] = 28;
-            
-            if (ymd[1] == 1) {
-                ymd[1] = 12;
-                ymd[0]--;
-            } else {
-                ymd[1]--;
-            }
-        } else {
-            ymd[2]--;
-        }
-        
-        return ymd[0] * 10000 + ymd[1] * 100 + ymd[2];
+        return ymd[0] * 12 * 28 + ymd[1] * 28 + ymd[2]-1;
     }
 }
