@@ -1,25 +1,17 @@
 class Solution {
     public int solution(int[] schedules, int[][] timelogs, int startday) {
-        int answer = 0;
+        int answer = schedules.length;
         for (int i = 0; i<schedules.length; i++) {
-            int schedule = schedules[i];
-            int max = schedule +10;
-            if (max % 100 > 59) {
-                max = ((max / 100) + 1) * 100 + (max % 100) % 60;
-            }
-            int start = startday;
-            boolean check = true;
+            int max = (schedules[i] + 10) % 100 > 59 ? schedules[i] + 110 - 60 : schedules[i] + 10 ;
+
             for (int j = 0; j<timelogs[i].length; j++) {
-                if (start == 8) start = 1;
+                if ((startday + j) % 7 == 0 || (startday + j) % 7 == 6) continue;
                 
-                if (start < 6 && timelogs[i][j] > max) {
-                    check = false;
+                if (timelogs[i][j] > max) {
+                    answer--;
                     break;
                 }
-                
-                start++;
             }
-            if (check) answer++;
         }
         return answer;
     }
