@@ -4,7 +4,7 @@ import java.util.*;
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static boolean[] visited;
-    static List<List<Integer>> graph;
+    static ArrayList<Integer>[] graph;
     public static void main(String[] args) throws IOException {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         int N = Integer.parseInt(st.nextToken());
@@ -12,10 +12,10 @@ public class Main {
 
         int answer = 0;
 
-        graph = new ArrayList<>();
+        graph = new ArrayList[N+1];
 
         for (int i = 0; i<=N; i++) {
-            graph.add(new ArrayList<>());
+            graph[i] = new ArrayList<>();
         }
 
         for (int i = 0; i<M; i++) {
@@ -23,8 +23,8 @@ public class Main {
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
 
-            graph.get(u).add(v);
-            graph.get(v).add(u);
+            graph[u].add(v);
+            graph[v].add(u);
         }
 
         visited = new boolean[N+1];
@@ -39,13 +39,18 @@ public class Main {
     }
 
     static void dfs(int start) {
-        if (visited[start]) return;
-
+        Stack<Integer> stack = new Stack<>();
+        stack.push(start);
         visited[start] = true;
 
-        for (int next : graph.get(start)) {
-            if (visited[next]) continue;
-            dfs(next);
+        while(!stack.isEmpty()) {
+            int cur = stack.pop();
+
+            for (int next : graph[cur]) {
+                if (visited[next]) continue;
+                visited[next] = true;
+                stack.push(next);
+            }
         }
     }
 }
