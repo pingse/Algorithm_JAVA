@@ -6,27 +6,24 @@ class Solution {
         for (int num : win_nums) {
             win.add(num);
         }
-        int high = 0;
-        int low = 0;
-        int[] answer = {6, 6};
+        int zero = 0;
+        int same = 0;
+        int high = 7;
+        int low = 7;
         
         for (int i = 0; i<lottos.length; i++) {
-            int now = lottos[i];
-            
-            if (now == 0) {
-                high++;
-                if (high > 1) answer[0]--;
-            } else {
-                if (win.contains(now)) {
-                    high++;
-                    low++;
-                    
-                    if (high > 1) answer[0]--;
-                    if (low > 1) answer[1]--;
-                }
+            if (lottos[i] == 0) {
+                zero++;
+            } else if (win.contains(lottos[i])) {
+                same++;
             }
         }
         
-        return answer;
+        high -= (zero + same);
+        low -= same;
+        if (high > 6) high = 6;
+        if (low > 6) low = 6;
+        
+        return new int[]{high, low};
     }
 }
