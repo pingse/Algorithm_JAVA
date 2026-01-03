@@ -8,7 +8,7 @@ public class Main {
     static int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1};
     public static void main(String[] args) throws IOException {
         StringTokenizer st;
-        int[][] map;
+        char[][] map;
         StringBuilder sb = new StringBuilder();
 
         while(true) {
@@ -18,20 +18,24 @@ public class Main {
 
             if (y == 0 && x == 0) break;
 
-            map = new int[y][x];
+            map = new char[y][x];
+
+            for (int i = 0; i < y; i++) {
+                Arrays.fill(map[i], '0');
+            }
 
             for(int i = 0; i<y; i++) {
                 String str = br.readLine();
                 for (int j = 0; j<x; j++) {
                     if (str.charAt(j) == '*') {
-                        map[i][j] = -1;
+                        map[i][j] = '*';
                         for (int k = 0; k<8; k++) {
                             int ny = i + dy[k];
                             int nx = j + dx[k];
 
                             if (ny >= y || nx >= x || ny < 0 || nx < 0) continue;
 
-                            if (map[ny][nx] == -1) continue;
+                            if (map[ny][nx] == '*') continue;
 
                             map[ny][nx]++;
                         }
@@ -41,11 +45,7 @@ public class Main {
 
             for (int i = 0; i<y; i++) {
                 for (int j = 0; j<x; j++) {
-                    if (map[i][j] == -1) {
-                        sb.append("*");
-                    } else {
-                        sb.append(map[i][j]);
-                    }
+                    sb.append(map[i][j]);
                 }
                 sb.append("\n");
             }
