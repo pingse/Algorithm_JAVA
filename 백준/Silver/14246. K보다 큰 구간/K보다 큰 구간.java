@@ -6,26 +6,28 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int n = Integer.parseInt(br.readLine());
         int[] arr = new int[n+1];
-        long[] sum = new long[n+1];
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
         for (int i = 1; i<=n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
-            sum[i] = sum[i-1] + arr[i];
         }
 
         int k = Integer.parseInt(br.readLine());
         long answer = 0;
 
-        for (int i = 1; i<=n; i++) {
-            int count = 0;
-            for (int j = i; j<=n; j++) {
-                if (sum[j] - sum[i-1] > k) {
-                    count = n - j + 1;
-                    break;
-                }
+        int l = 1, r=0;
+        long sum = 0;
+
+        while(l <= n) {
+            while(r + 1 <= n && sum + arr[r+1] <= k) {
+                r++;
+                sum += arr[r];
             }
-            answer += count;
+
+            answer += (n - r);
+
+            sum -= arr[l];
+            l++;
         }
 
         System.out.println(answer);
