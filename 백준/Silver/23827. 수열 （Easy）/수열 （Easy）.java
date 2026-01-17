@@ -6,16 +6,19 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int N = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        long[] A = new long[N+1];
+        long[] A = new long[N];
 
         long answer = 0;
 
-        for (int i = 1; i<=N; i++) {
-            A[i] = (A[i-1] + Long.parseLong(st.nextToken())) % 1000000007;
+        for (int i = 0; i<N; i++) {
+            A[i] = Long.parseLong(st.nextToken());
         }
 
-        for (int i = 1; i<N; i++) {
-            answer = (answer + ((A[i] - A[i-1]) * (A[N] - A[i])) % 1000000007)%1000000007;
+        long suffixSum = 0;
+
+        for (int i = N-1; i>=0; i--) {
+            answer = (answer + A[i] * suffixSum) % 1000000007;
+            suffixSum = (suffixSum + A[i]) % 1000000007;
         }
 
         System.out.println(answer);
