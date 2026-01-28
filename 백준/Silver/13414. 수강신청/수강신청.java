@@ -9,16 +9,18 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
-        Map<String, Integer> map = new HashMap<>();
-        for (int i = 0; i<m; i++) {
-            map.put(br.readLine(), i);
+        Map<String, Integer> map = new LinkedHashMap<>();
+
+        for (int i = 0; i < m; i++) {
+            String s = br.readLine();
+            map.remove(s);   // 이미 있으면 제거
+            map.put(s, 0);   // 다시 넣어서 순서 최신화
         }
 
-        List<String> list = new ArrayList<>(map.keySet());
-        Collections.sort(list, (o1, o2) -> map.get(o1) - map.get(o2));
-        int size = Math.min(n, list.size());
-        for (int i = 0; i<size; i++) {
-            bw.write(list.get(i) + "\n");
+        int cnt = 0;
+        for (String s : map.keySet()) {
+            if (cnt++ == n) break;
+            bw.write(s + "\n");
         }
         bw.flush();
         bw.close();
