@@ -8,10 +8,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int t = Integer.parseInt(br.readLine());
 
-        Set<String> nums = new HashSet<>();
+        Set<Integer> nums = new HashSet<>();
         Set<Integer> a = new HashSet<>();
         Set<Integer> b = new HashSet<>();
         Set<Integer> c = new HashSet<>();
+        Set<Integer> ab = new HashSet<>();
         StringTokenizer st;
 
         for (int i = 0; i < t; i++) {
@@ -19,6 +20,7 @@ public class Main {
             a.clear();
             b.clear();
             c.clear();
+            ab.clear();
 
             int N = Integer.parseInt(br.readLine());
             st = new StringTokenizer(br.readLine(), " ");
@@ -43,16 +45,27 @@ public class Main {
 
             for (int num1 : a) {
                 for (int num2 : b) {
-                    for (int num3 : c) {
-                        String str = String.valueOf((num1 + num2 + num3));
-                        if (str.replace("5", "").replace("8", "").equals("")) {
-                            nums.add(str);
-                        }
-                    }
+                    ab.add(num1+num2);
+                }
+            }
+
+            for (int sum1 : ab) {
+                for (int num3 : c) {
+                    int sum = sum1 + num3;
+                    if (isLucky(sum)) nums.add(sum);
                 }
             }
 
             System.out.println(nums.size());
         }
+    }
+    static boolean isLucky(int x) {
+        if (x == 0) return false;
+        while (x > 0) {
+            int d = x % 10;
+            if (d != 5 && d != 8) return false;
+            x /= 10;
+        }
+        return true;
     }
 }
