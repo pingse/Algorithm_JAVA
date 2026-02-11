@@ -14,19 +14,15 @@ public class Main {
         for (int i = 0; i<M; i++) {
             int a = Integer.parseInt(br.readLine());
 
-            int l = 0;
-            int r = 0;
-
             if (a > 0) {
-                l = 1;
-                r = a;
+                if (K <= a) {
+                    K = a + 1 - K;
+                }
             } else {
-                r = N;
-                l = N+a+1;
-            }
-
-            if (K >= l && K <= r) {
-                K = r + l - K;
+                int l = N + a + 1;
+                if (K >= l) {
+                    K = 2 * N + a + 1 - K;
+                }
             }
         }
         System.out.println(K);
