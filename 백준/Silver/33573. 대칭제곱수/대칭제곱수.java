@@ -3,27 +3,31 @@ import java.util.*;
 
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws IOException {
         int n = Integer.parseInt(br.readLine());
 
-        StringBuilder sb;
+        StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i<n; i++) {
-            String num = br.readLine();
+        for (int i = 0; i < n; i++) {
+            long a = Long.parseLong(br.readLine());
 
-            sb = new StringBuilder(num);
-            long a = Long.parseLong(num);
-            long b = Long.parseLong(sb.reverse().toString());
-            if (Math.sqrt(a) % 1 == 0 && Math.sqrt(b) % 1 == 0) {
-                bw.write("YES\n");
+            long b = 0;
+            long temp = a;
+            while (temp > 0) {
+                b = b * 10 + temp % 10;
+                temp /= 10;
+            }
+
+            long x = (long)Math.sqrt(a);
+            long y = (long)Math.sqrt(b);
+
+            if (x * x == a && y * y == b) {
+                sb.append("YES\n");
             } else {
-                bw.write("NO\n");
+                sb.append("NO\n");
             }
         }
 
-        bw.flush();
-        bw.close();
-        br.close();
+        System.out.println(sb.toString());
     }
 }
