@@ -11,13 +11,13 @@ public class Main {
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i<n; i++) {
-            answer += Long.parseLong(st.nextToken());
+            answer += Integer.parseInt(st.nextToken());
         }
 
         st = new StringTokenizer(br.readLine(), " ");
-        long[] A = new long[n];
+        int[] A = new int[n];
         for (int i = 0; i<n; i++) {
-            A[i] = Long.parseLong(st.nextToken());
+            A[i] = Integer.parseInt(st.nextToken());
         }
 
         Arrays.sort(A);
