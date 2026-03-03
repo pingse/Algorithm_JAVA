@@ -3,8 +3,8 @@ import java.util.*;
 
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static int[][] times;
     static ArrayList<Node>[] graph;
+    static ArrayList<Node>[] reverseGraph;
     static final int INF = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws IOException {
@@ -14,11 +14,11 @@ public class Main {
         int X = Integer.parseInt(st.nextToken());
 
         graph = new ArrayList[N+1];
-        times = new int[N+1][N+1];
+        reverseGraph = new ArrayList[N+1];
 
         for (int i = 1; i<=N; i++) {
             graph[i] = new ArrayList<>();
-            Arrays.fill(times[i], INF);
+            reverseGraph[i] = new ArrayList<>();
         }
 
         for (int i = 0; i<M; i++) {
@@ -29,38 +29,42 @@ public class Main {
             int time = Integer.parseInt(st.nextToken());
 
             graph[start].add(new Node(end, time));
+            reverseGraph[end].add(new Node(start, time));
         }
 
+        int[] time = dijkstra(X, graph);
+        int[] reverseTime = dijkstra(X, reverseGraph);
         int answer = 0;
 
         for (int i = 1; i<=N; i++) {
-            dijkstra(i);
-        }
-
-        for (int i = 1; i<=N; i++) {
-            answer = Math.max(answer, times[i][X] + times[X][i]);
+            answer = Math.max(answer, time[i] + reverseTime[i]);
         }
 
         System.out.println(answer);
     }
 
-    static void dijkstra(int start) {
+    static int[] dijkstra(int start, ArrayList<Node>[] g) {
+        int[] time = new int[g.length];
+        Arrays.fill(time, INF);
+
         PriorityQueue<Node> pq = new PriorityQueue<>();
         pq.add(new Node(start, 0));
-        times[start][start] = 0;
+        time[start] = 0;
 
         while(!pq.isEmpty()) {
             Node cur = pq.poll();
 
-            if (cur.time > times[start][cur.to]) continue;
+            if (cur.time > time[cur.to]) continue;
 
-            for (Node next : graph[cur.to]) {
-                if (times[start][next.to] > times[start][cur.to] + next.time) {
-                    times[start][next.to] = times[start][cur.to] + next.time;
-                    pq.add(new Node(next.to, times[start][next.to]));
+            for (Node next : g[cur.to]) {
+                if (time[next.to] > time[cur.to] + next.time) {
+                    time[next.to] = time[cur.to] + next.time;
+                    pq.add(new Node(next.to, time[next.to]));
                 }
             }
         }
+
+        return time;
     }
 
     static class Node implements Comparable<Node> {
