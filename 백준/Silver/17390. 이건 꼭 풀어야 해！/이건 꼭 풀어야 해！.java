@@ -10,24 +10,28 @@ public class Main {
 
         int[] arr = new int[N+1];
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i<N; i++) {
+        for (int i = 1; i<=N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        Arrays.sort(arr);
-
-        int[] arr2 = new int[N+1];
+        Arrays.sort(arr, 1, N+1);
 
         for (int i = 1; i<=N; i++) {
-            arr2[i] = arr2[i-1] + arr[i];
+            arr[i] = arr[i-1] + arr[i];
         }
 
-        for (int i = 0; i<Q; i++) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < Q; i++) {
+
             st = new StringTokenizer(br.readLine());
+
             int l = Integer.parseInt(st.nextToken());
             int r = Integer.parseInt(st.nextToken());
 
-            System.out.println(arr2[r] - arr2[l-1]);
+            sb.append(arr[r] - arr[l-1]).append('\n');
         }
+
+        System.out.print(sb);
     }
 }
