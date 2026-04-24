@@ -1,10 +1,10 @@
 # [level 0] 문자 리스트를 문자열로 변환하기 - 181941 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181941) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181941?language=python3) 
 
 ### 성능 요약
 
-메모리: 92.9 MB, 시간: 0.07 ms
+메모리: 9.19 MB, 시간: 0.02 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 01월 06일 22:23:19
+2026년 04월 24일 21:32:59
 
 ### 문제 설명
 
